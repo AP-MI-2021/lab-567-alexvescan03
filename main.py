@@ -1,6 +1,8 @@
-from Teste.testAll import runAllTests
-from UI import consoleui
-if __name__=="__main__":
-    runAllTests()
-    consoleui.runConsoleUI()
+from Teste.TestAll import runAllTests
+from UI.Console import runMenu
 
+
+def main():
+    runAllTests()
+    runMenu()
+main()
