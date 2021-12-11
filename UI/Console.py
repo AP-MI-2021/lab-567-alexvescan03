@@ -78,11 +78,13 @@ def meniuAjutor():
     print("8.AFISARE NUMAR TITLURI: doar comanda 'afisare numar titluri'")
     print("a.AFISAREA VANZARILOR: doar comanda 'showall'")
 
+
 def citireDate():
     givenString = input("Dati comanda, cu elementele separate prin virgula: ")
     date = givenString.split(",")
     print(len(date))
     return date
+
 
 def getPret():
     pret = input(f"{bcolors.UNDERLINE}{bcolors.OKYELLOW}Dati pretul cartii: {bcolors.ENDC}")
@@ -92,26 +94,33 @@ def getPret():
     return float(pret)
 
 
-def uiAdaugaVanzare(lista):
+def uiAdaugaVanzare(lista,undoLista,redoLista):
     id = getIdUI(lista)
     titlu = input(f"dati numele cartii: {bcolors.ENDC}")
     gen = input("dati genul")
     pret = getPret()
     tip_reducere = getTipReducere()
 
-    return adaugaVanzare(id,titlu,gen,pret,tip_reducere,lista)
+    rezultat = adaugaVanzare(id,titlu,gen,pret,tip_reducere,lista)
+    undoLista.append(lista)
+    redoLista.clear()
+    return rezultat
 
-def uiStergeVanzare(lista):
+
+def uiStergeVanzare(lista,undoLista,redoLista):
     if validate_len_lista(lista) is False:
         print(f"{bcolors.FAIL}Nu este nicio vanzare de sters "
               f"incearcă să adaugi o vanzare: {bcolors.ENDC}")
         return lista
     else:
         id = getIdUI(lista, True)
-        return stergereVanzare(id, lista)
+        rezultat = stergereVanzare(id, lista)
+        undoLista.append(lista)
+        redoLista.clear()
+        return rezultat
 
 
-def uiModificaVanzare(lista):
+def uiModificaVanzare(lista,undoLista,redoLista):
     if validate_len_lista(lista) is False:
         print(f"{bcolors.FAIL}Nu este nicio vanzare de modificat "
               f"incearca sa adaugi o vanzare: {bcolors.ENDC}")
@@ -122,7 +131,11 @@ def uiModificaVanzare(lista):
         gen = input("dati noul gen ")
         pret = getPret()
         tip_reducere = getTipReducere()
-        return modificaVanzare(id,titlu,gen,pret,tip_reducere,lista)
+        rezultat = modificaVanzare(id,titlu,gen,pret,tip_reducere,lista)
+        undoLista.append(lista)
+        redoLista.clear()
+        return rezultat
+
 
 def getIdUI(lista,desiredResult = False):
     id = input(f"{bcolors.BOLD}{bcolors.OKYELLOW}Introduceti ID: {bcolors.ENDC}")
@@ -131,13 +144,14 @@ def getIdUI(lista,desiredResult = False):
         id = input(f"{bcolors.BOLD}{bcolors.OKYELLOW}Introduceti ID: {bcolors.ENDC}")
     return id
 
+
 def uinrTitluriDistincte(lista):
     rezultat = afisareNrTitluriDistincteGen(lista)
     for gen in rezultat.keys():
         print("Gen {0}, Numar Titluri: {1}".format(gen, rezultat[gen]))
 
 
-def uiModificareGenLista(lista):
+def uiModificareGenLista(lista,undoLista,redoLista):
     if validate_len_lista(lista) is False:
         print(f"{bcolors.FAIL}Nu este nicio vanzare facută "
               f"incearcă să adaugi o vanzare: {bcolors.ENDC}")
@@ -147,9 +161,16 @@ def uiModificareGenLista(lista):
             print("titlu: {0} , gen:{1}".format(gettitlu(vanzare), getgen(vanzare)))
         titlu = input("titlul pentru care modificam genul: ")
         gen = input("noul gen: ")
-        lista = modificareGen(lista,titlu,gen)
-    return lista
+        rezultat = modificareGen(lista, titlu, gen)
+        undoLista.append(lista)
+        redoLista.clear()
+        return rezultat
 
+def uiaplicareDiscount(lista, undoLista, redoLista):
+    rezultat = aplicareDiscount(lista)
+    undoLista.append(lista)
+    redoLista.clear()
+    return rezultat
 
 def uiPretMinimGen(lista):
     if validate_len_lista(lista) is False:
@@ -163,13 +184,15 @@ def uiPretMinimGen(lista):
         return minim
 
 
-def uiOrdonareCrescatorLista(lista):
+def uiOrdonareCrescatorLista(lista,undoLista,redoLista):
     if validate_len_lista(lista) is False:
         print(f"{bcolors.FAIL}Nu este nicio vanzare facută "
               f"incearcă să adaugi o vanzare: {bcolors.ENDC}")
     else:
-        lista = ordonareCrescatoarePret(lista)
-    return lista
+        rezultat = ordonareCrescatoarePret(lista)
+        undoLista.append(lista)
+        redoLista.clear()
+        return rezultat
 
 
 def uiNrTitluriDistincte(lista):
@@ -218,6 +241,8 @@ def uiModificaVanzare2(date,lista):
 
 
 def runMenu():
+    undoLista = []
+    redoLista = []
     lista = []
     ok = True
     while ok == True:
@@ -228,27 +253,35 @@ def runMenu():
                 PrintMenu1()
                 optiune = input("Dați optiunea: ")
                 if optiune == "1":
-                    lista = uiAdaugaVanzare(lista)
+                    lista = uiAdaugaVanzare(lista,undoLista,redoLista)
                 elif optiune == "2":
-                    lista = uiStergeVanzare(lista)
+                    lista = uiStergeVanzare(lista,undoLista,redoLista)
                 elif optiune == "3":
-                    lista = uiModificaVanzare(lista)
+                    lista = uiModificaVanzare(lista,undoLista,redoLista)
                 elif optiune == "4":
-                    pass
+                    if len(undoLista) > 0:
+                        redoLista.append(lista)
+                        lista = undoLista.pop()
+                    else:
+                        print("nu se poate face undo!")
                 elif optiune == "5":
-                    lista = aplicareDiscount(lista)
+                    lista = uiaplicareDiscount(lista, undoLista, redoLista)
                 elif optiune == "6":
-                    lista = uiModificareGenLista(lista)
+                    lista = uiModificareGenLista(lista,undoLista,redoLista)
                 elif optiune == "7":
                     uiPretMinimGen(lista)
                 elif optiune == "8":
-                    lista = uiOrdonareCrescatorLista(lista)
+                    lista = uiOrdonareCrescatorLista(lista,undoLista,redoLista)
                 elif optiune == "9":
                     uiNrTitluriDistincte(lista)
                 elif optiune == "s" or optiune == "S":
                     lista = []
                 elif optiune == "r" or optiune == "R":
-                    pass
+                    if len(redoLista) > 0:
+                        undoLista.append(lista)
+                        lista = redoLista.pop()
+                    else:
+                        print("nu se poate face redo")
                 elif optiune == "a":
                     ShowAll(lista)
                 elif optiune == "x" or optiune == "X":
@@ -272,11 +305,11 @@ def runMenu():
                         elif optiune2 == "4":
                             lista = aplicareDiscount(lista)
                         elif optiune2 == "5":
-                            lista = uiModificareGenLista(lista)
+                            lista = uiModificareGenLista(lista,undoLista,redoLista)
                         elif optiune2 == "6":
                             uiPretMinimGen(lista)
                         elif optiune2 == "7":
-                            lista = uiOrdonareCrescatorLista(lista)
+                            lista = uiOrdonareCrescatorLista(lista,undoLista,redoLista)
                         elif optiune2 == "8":
                             uiNrTitluriDistincte(lista)
                         elif optiune2 == "x":

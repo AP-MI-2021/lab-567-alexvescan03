@@ -1,6 +1,6 @@
 def creareVanzare(id, titlu, gen, pret, tipReducere):
     '''
-    creeaza un dictionar care reprezinta rezervare zboruri
+    creeaza un dictionar care reprezinta vanzari de  carti
     :param id: str
     :param titlu: str
     :param gen: str
@@ -19,15 +19,15 @@ def creareVanzare(id, titlu, gen, pret, tipReducere):
 def getId(Vanzare):
     '''
     da id-ul unei vanzari
-    :param Rezervare:dictionar ce contine o vanzare
+    :param Vanzare:dictionar ce contine o vanzare
     :return:meniul vanzare
     '''
     return Vanzare["id"]
 
 def gettitlu(Vanzare):
     '''
-    da numele unei rezervari
-    :param Rezervare:
+    da numele unei vanzari
+    :param Vanzare:
     :return:
     '''
     return Vanzare["titlu"]

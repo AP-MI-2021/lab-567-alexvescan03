@@ -1,4 +1,4 @@
-from Domain.vanzare import gettipReducere, getpret, gettitlu, getgen
+from Domain.vanzare import gettipReducere, getpret, gettitlu, getgen, creareVanzare, getId
 
 
 class bcolors:
@@ -22,19 +22,24 @@ def aplicareDiscount(lista):
         for vanzare in lista:
             a = int(getpret(vanzare))
             if gettipReducere(vanzare) == "Silver":
-               vanzare["pret"] = 95/100* a
+                vanzare = creareVanzare(getId(vanzare), gettitlu(vanzare), getgen(vanzare), 95/100 * a, gettipReducere(vanzare))
             elif gettipReducere(vanzare) == "Gold":
-               vanzare["pret"] = 90/100* a
+                vanzare = creareVanzare(getId(vanzare), gettitlu(vanzare), getgen(vanzare), 90/100 * a,
+                                        gettipReducere(vanzare))
             listaNoua.append(vanzare)
     return listaNoua
 
 
 def modificareGen(lista,titlu,gen):
+    lista_noua = []
     if len(lista) > 0:
         for vanzare in lista:
             if gettitlu(vanzare) == titlu:
-                vanzare["gen"] = gen
-    return lista
+                vanzare1 = creareVanzare(getId(vanzare), gettitlu(vanzare), gen, getpret(vanzare), gettipReducere(vanzare))
+                lista_noua.append(vanzare1)
+            else:
+                lista_noua.append(vanzare)
+    return lista_noua
 
 
 def pretMinimGen(lista,gen):

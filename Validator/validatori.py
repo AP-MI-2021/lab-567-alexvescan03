@@ -33,6 +33,7 @@ def validate_adaugaVanzare_meniu2(date,lista):
     else:
         return False
 
+
 def validate_modificareVanzare_meniu2(date,lista):
     if validate_unique_id(date[0], lista) is True:
         return False
