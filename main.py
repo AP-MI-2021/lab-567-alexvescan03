@@ -5,4 +5,5 @@ from UI.Console import runMenu
 def main():
     runAllTests()
     runMenu()
-main()
+if __name__ == '__main__':
+    main()

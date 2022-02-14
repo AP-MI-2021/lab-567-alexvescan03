@@ -8,13 +8,13 @@ def creareVanzare(id, titlu, gen, pret, tipReducere):
     :param tipReducere: str
     :return:un dictionar ce contine o vanzare
     '''
-    return{
-        "id": id,
-        "titlu" : titlu,
-        "gen" : gen,
-        "pret" : pret,
-        "tipReducere" : tipReducere,
-          }
+    return[
+         id,
+        titlu,
+         gen,
+         pret,
+         tipReducere]
+
 
 def getId(Vanzare):
     '''
@@ -22,7 +22,7 @@ def getId(Vanzare):
     :param Vanzare:dictionar ce contine o vanzare
     :return:meniul vanzare
     '''
-    return Vanzare["id"]
+    return Vanzare[0]
 
 def gettitlu(Vanzare):
     '''
@@ -30,16 +30,16 @@ def gettitlu(Vanzare):
     :param Vanzare:
     :return:
     '''
-    return Vanzare["titlu"]
+    return Vanzare[1]
 
 def getgen(Vanzare):
-    return Vanzare["gen"]
+    return Vanzare[2]
 
 def getpret(Vanzare):
-    return Vanzare["pret"]
+    return Vanzare[3]
 
 def gettipReducere(Vanzare):
-    return Vanzare["tipReducere"]
+    return Vanzare[4]
 
 def toString(Vanzare):
     return "Id: {}, titlu: {}, gen: {}, pret: {}, tipReducere: {}".format(
